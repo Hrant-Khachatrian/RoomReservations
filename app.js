@@ -19,25 +19,31 @@ function handleClientLoad() {
     }
   );
 
-  gapi.load('client', initClient);
 }
 
 function requestPermission() {
   window.google.accounts.id.prompt();
 }
 
-function handleCredentialResponse(response) {
+async function handleCredentialResponse(response) {
+  // Wait for the gapi.client to be loaded before setting the token
+  await initClient();
+
   gapi.auth.setToken({ access_token: response.credential });
   onSignIn();
 }
+
 
 function onSignIn(googleUser) {
   gapi.auth2.getAuthInstance().isSignedIn.set(true);
   updateSigninStatus(true);
 }
 
+async function initClient() {
+  await new Promise((resolve) => {
+    gapi.load('client', resolve);
+  });
 
-function initClient() {
   gapi.client.init({
     clientId: CLIENT_ID,
     scope: SCOPE,
@@ -49,6 +55,7 @@ function initClient() {
     gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
   });
 }
+
 
 function updateSigninStatus(isSignedIn) {
   const signInButton = document.getElementById('sign-in');
