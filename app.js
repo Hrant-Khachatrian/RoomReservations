@@ -80,5 +80,33 @@ function renderCalendar(reservations) {
   });
 }
 
+function submitReservation(event) {
+  event.preventDefault();
+
+  const room = document.getElementById('room').value;
+  const eventName = document.getElementById('event-name').value;
+  const startTime = document.getElementById('start-time').value;
+  const endTime = document.getElementById('end-time').value;
+  const userEmail = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
+
+  const newReservation = [room, eventName, startTime, endTime, userEmail];
+
+  gapi.client.sheets.spreadsheets.values.append({
+    spreadsheetId: '16-gav0GfAirJMCCTunUNJsH-eEbUfT88amMhwPzVmjk',
+    range: 'Reservations!A:F',
+    valueInputOption: 'RAW',
+    insertDataOption: 'INSERT_ROWS',
+    values: [newReservation],
+  }).then(() => {
+    // Clear the form and fetch updated reservation data
+    document.getElementById('reservation-form').reset();
+    getReservations().then((response) => {
+      const reservations = response.result.values || [];
+      renderCalendar(reservations);
+    });
+  });
+}
+
+
 
 window.addEventListener('DOMContentLoaded', handleClientLoad);
