@@ -2,19 +2,33 @@ const CLIENT_ID = '611465291366-4drcbtcvi06gdv242ivv3pbmqqtn338m.apps.googleuser
 const SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
 
 function handleClientLoad() {
-  gapi.load('client:auth2', initClient);
-  gapi.load('signin2', renderSignInButton);
+  window.google.accounts.id.initialize({
+    client_id: CLIENT_ID,
+    callback: handleCredentialResponse,
+    auto_select: false,
+  });
+
+  window.google.accounts.id.renderButton(
+    document.getElementById('sign-in'),
+    {
+      theme: 'outline',
+      size: 'large',
+      width: 250,
+      height: 50,
+      on_click: requestPermission,
+    }
+  );
+
+  gapi.load('client', initClient);
 }
 
-function renderSignInButton() {
-  gapi.signin2.render('sign-in', {
-    scope: SCOPE,
-    width: 250,
-    height: 50,
-    longtitle: true,
-    theme: 'dark',
-    onsuccess: onSignIn,
-  });
+function requestPermission() {
+  window.google.accounts.id.prompt();
+}
+
+function handleCredentialResponse(response) {
+  gapi.auth.setToken({ access_token: response.credential });
+  onSignIn();
 }
 
 function onSignIn(googleUser) {
