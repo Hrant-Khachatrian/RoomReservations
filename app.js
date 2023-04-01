@@ -25,13 +25,6 @@ function requestPermission() {
   window.google.accounts.id.prompt();
 }
 
-async function handleCredentialResponse(response) {
-  // Wait for the gapi.client to be loaded before setting the token
-  await initClient();
-
-  gapi.auth.setToken({ access_token: response.credential });
-  onSignIn();
-}
 
 
 function onSignIn(googleUser) {
@@ -41,7 +34,7 @@ function onSignIn(googleUser) {
 
 async function initClient() {
   await new Promise((resolve) => {
-    gapi.load('client', resolve);
+    gapi.load('client:auth2', resolve);
   });
 
   gapi.client.init({
@@ -55,6 +48,21 @@ async function initClient() {
     gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
   });
 }
+
+async function handleCredentialResponse(response) {
+  // Wait for the gapi.client and gapi.auth2 to be loaded before setting the token
+  await initClient();
+
+  gapi.auth2.getAuthInstance().signIn({
+    login_hint: response.login_hint,
+    prompt: 'none',
+  }).then(() => {
+    onSignIn();
+  }, (error) => {
+    console.error('Sign-in failed:', error);
+  });
+}
+
 
 
 function updateSigninStatus(isSignedIn) {
