@@ -42,4 +42,12 @@ function handleSignOutClick() {
   gapi.auth2.getAuthInstance().signOut();
 }
 
+function getReservations() {
+  return gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: '16-gav0GfAirJMCCTunUNJsH-eEbUfT88amMhwPzVmjk',
+    range: 'Reservations!A2:F',
+  });
+}
+
+
 window.addEventListener('DOMContentLoaded', handleClientLoad);
