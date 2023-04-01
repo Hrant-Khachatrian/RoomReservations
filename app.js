@@ -19,12 +19,20 @@ function initClient() {
 }
 
 function updateSigninStatus(isSignedIn) {
+  const signInButton = document.getElementById('sign-in');
+  const signOutButton = document.getElementById('sign-out');
+
   if (isSignedIn) {
+    signInButton.style.display = 'none';
+    signOutButton.style.display = 'block';
+
     // Fetch reservation data and render the calendar
   } else {
-    // Show a sign-in button or prompt the user to sign in
+    signInButton.style.display = 'block';
+    signOutButton.style.display = 'none';
   }
 }
+
 
 function handleSignInClick() {
   gapi.auth2.getAuthInstance().signIn();
