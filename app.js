@@ -3,7 +3,25 @@ const SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
 
 function handleClientLoad() {
   gapi.load('client:auth2', initClient);
+  gapi.load('signin2', renderSignInButton);
 }
+
+function renderSignInButton() {
+  gapi.signin2.render('sign-in', {
+    scope: SCOPE,
+    width: 250,
+    height: 50,
+    longtitle: true,
+    theme: 'dark',
+    onsuccess: onSignIn,
+  });
+}
+
+function onSignIn(googleUser) {
+  gapi.auth2.getAuthInstance().isSignedIn.set(true);
+  updateSigninStatus(true);
+}
+
 
 function initClient() {
   gapi.client.init({
