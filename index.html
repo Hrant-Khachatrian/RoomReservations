@@ -16,6 +16,23 @@
 
   <div id="calendar"></div>
 
+  <form id="reservation-form" onsubmit="submitReservation(event)">
+  <label for="room">Room:</label>
+  <select id="room" required>
+    <option value="Room 1">Room 1</option>
+    <option value="Room 2">Room 2</option>
+    <option value="Room 3">Room 3</option>
+    <option value="Room 4">Room 4</option>
+  </select>
+  <label for="event-name">Event Name:</label>
+  <input type="text" id="event-name" required />
+  <label for="start-time">Start Time:</label>
+  <input type="datetime-local" id="start-time" required />
+  <label for="end-time">End Time:</label>
+  <input type="datetime-local" id="end-time" required />
+  <button type="submit">Submit Reservation</button>
+</form>
+
   
 </body>
 </html>
