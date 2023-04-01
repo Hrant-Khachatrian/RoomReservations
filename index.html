@@ -4,11 +4,17 @@
   <title>Meeting Room Reservation</title>
   <script src="https://apis.google.com/js/api.js"></script>
   <script src="app.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" integrity="sha512-6rM+ei5DAA6vX5Q2ff2y5k5JxMi8wv7f6ZPhU6ZFTUQ17Xo6udopqkxzmk0Jy7HDxR08Gw1neU/6/KIBPx6J/sg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGplaVsrDhjHWZLypsL4ibX1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js" integrity="sha512-RmTRUxGzN+lPZLLE77gHEfR9R7EjTbDobEV39T21a88M+3e09yYl+1KjG6blXQ6q3UV6z0Cg8dQw/2vZHxA1/sg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </head>
 <body>
  
 <button id="sign-in" onclick="handleSignInClick()">Sign in with Google</button>
 <button id="sign-out" onclick="handleSignOutClick()" style="display:none;">Sign out</button>
+
+  <div id="calendar"></div>
 
   
 </body>
