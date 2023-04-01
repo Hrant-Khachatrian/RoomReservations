@@ -26,12 +26,16 @@ function updateSigninStatus(isSignedIn) {
     signInButton.style.display = 'none';
     signOutButton.style.display = 'block';
 
-    // Fetch reservation data and render the calendar
+    getReservations().then((response) => {
+      const reservations = response.result.values || [];
+      renderCalendar(reservations);
+    });
   } else {
     signInButton.style.display = 'block';
     signOutButton.style.display = 'none';
   }
 }
+
 
 
 function handleSignInClick() {
@@ -46,6 +50,33 @@ function getReservations() {
   return gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: '16-gav0GfAirJMCCTunUNJsH-eEbUfT88amMhwPzVmjk',
     range: 'Reservations!A2:F',
+  });
+}
+
+function renderCalendar(reservations) {
+  const calendarElement = document.getElementById('calendar');
+
+  // Clear the calendar element to re-render it
+  calendarElement.innerHTML = '';
+
+  // Convert the reservations array to an event array
+  const events = reservations.map(reservation => ({
+    title: reservation[1],
+    start: reservation[2],
+    end: reservation[3],
+    room: reservation[4],
+    user: reservation[5],
+  }));
+
+  // Initialize FullCalendar and render the calendar
+  $(calendarElement).fullCalendar({
+    header: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay'
+    },
+    defaultView: 'month',
+    events: events,
   });
 }
 
